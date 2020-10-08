@@ -46,7 +46,7 @@ class Login extends React.Component {
                 </div>
                 <br />
                 {/* <br /> */}
-                <Button type="submit" variant="contained" color="primary">
+                <Button type="submit" variant="contained" color="blue">
                     Login
                 </Button>
             </form>
