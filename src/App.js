@@ -1,8 +1,11 @@
 import React from 'react';
-import StanleyCup from './Stanley-Cup.jpg';
+import logo from './logo.png';
 import './App.css';
 import Login from "./Components/Login.js";
 import { Switch, Route, withRouter } from 'react-router-dom';
+import NavBar from './Components/NavBar.js'
+import Home from './Components/Home'
+import Signup from './Components/Signup'
 
 class App extends React.Component {
 
@@ -24,22 +27,25 @@ class App extends React.Component {
     .then(data => {
       localStorage.setItem("token", data.jwt)
       this.setState({
-        user: data.user,
-        userCourses: data.user.courses
-      }, () => this.props.history.push("/users/courses"))
+        user: data.user
+      }) // add history.push for after login
     })
   }
   render() {
     return (
       <div className="App">
         <header className="App-header">
-          <h1>Fantasy NHL</h1>
-          <img src={StanleyCup} className="App-logo" alt="Stanley-Cup" />
+          <img src={logo} alt="logo" style={{"height": "200px"}}/>
+          <NavBar />
+          <Switch>
           <Route exact path="/login" component={()=> <Login loginHandler={this.loginHandler} />}/> 
+          <Route exact path="/signup" component={()=> <Signup signupHandler={this.signupHandler} />}/>
+          <Route exact path="/" component={()=> <Home loggedUser={this.state.user}/> }/>
+          </Switch>
         </header>
       </div>
     );
   }
 }
 
-export default App;
+export default withRouter(App);
