@@ -9,11 +9,15 @@ import Signup from './Components/Signup'
 import LeagueContainer from './Containers/LeagueContainer'
 import TeamContainer from './Containers/TeamContainer'
 import CreateLeague from './Components/CreateLeague'
+import CreateTeam from './Components/CreateTeam'
+import TeamShow from './Components/TeamShow.js'
 
 class App extends React.Component {
 
   state = {
-    user: null
+    user: null, 
+    leagues: [],
+    teams: []
   }
 
   componentDidMount = () => {
@@ -27,6 +31,20 @@ class App extends React.Component {
       .then(resp => resp.json())
       .then(data => this.setState({ user: data.user }))
     } 
+    fetch("http://localhost:3000/leagues")
+    .then(resp => resp.json())
+    .then(data => {
+        this.setState({
+            leagues: data
+        })
+    })
+    fetch("http://localhost:3000/teams")
+    .then(resp => resp.json())
+    .then(data => {
+        this.setState({
+            teams: data
+        })
+    })
   };
 
 
@@ -88,6 +106,20 @@ class App extends React.Component {
     .then(this.props.history.push("/leagues"))
   }
 
+  teamHandler = (team) => {
+    const options = {
+      method: 'POST',
+      headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      },
+      body: JSON.stringify(team)
+  }
+    fetch("http://localhost:3000/teams", options)
+    .then(resp => resp.json())
+    .then(this.props.history.push("/teams"))
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -96,11 +128,24 @@ class App extends React.Component {
         </div>
           <NavBar user={this.state.user} logoutHandler={this.logout}/>
           <Switch>
-          <Route exact path="/leagues" render={()=> <LeagueContainer /> } />
-          <Route exact path="/teams" render={()=> <TeamContainer /> } />
+          <Route exact path="/leagues/create" render={()=> <CreateLeague leagueHandler={this.leagueHandler}/>}/>
+          <Route exact path="/teams/create" render={() => <CreateTeam currentUser={this.state} teamHandler={this.teamHandler} />}/>
+          <Route exact path="/leagues/:id" render={({match})=> {
+            let id = parseInt(match.params.id)
+            let foundLeague = this.state.leagues.find(league => league.id === id)
+            return <TeamContainer league={foundLeague} currentUser={this.state.user} teamHandler={this.teamHandler} /> 
+          }} />
+          <Route exact path="teams/:id" render={({match}) => {
+            let id = parseInt(match.params.id)
+            debugger
+            console.log(id)
+            let foundTeam = this.state.teams.find(team => team.id === id)
+            console.log(foundTeam)
+            return <TeamShow currentUser={this.state.user} team={foundTeam} />
+          }} />
+          <Route exact path="/leagues" render={()=> <LeagueContainer leagues={this.state.leagues}/> } />
           <Route exact path="/login" render={()=> <Login loginHandler={this.loginHandler} />}/> 
           <Route exact path="/signup" render={()=> <Signup signupHandler={this.signupHandler} />}/>
-          <Route exact path="/leagues/create" render={()=> <CreateLeague leagueHandler={this.leagueHandler}/>}/>
           <Route exact path="/" render={()=> <Home loggedUser={this.state.user}/> }/>
           </Switch>
       </React.Fragment>
