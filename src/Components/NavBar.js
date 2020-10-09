@@ -1,68 +1,23 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import Menu from '@material-ui/core/Menu';
-import Button from '@material-ui/core/Button';
-// import { NavLink } from 'react-router-dom';
+import { Navbar, Nav} from 'react-bootstrap'
+import { withRouter } from 'react-router-dom';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  title: {
-    flexGrow: 1,
-  },
-}));
-
-const logout = (e) => {
-  localStorage.removeItem("token")
-  window.location.reload(false)
+class NavBar extends React.Component {
+    state = {  }
+    render() { 
+        return ( 
+            <Navbar style={{"background": "#B9B9B9"}}  expand="lg">
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Collapse id="basic-navbar-nav">
+              <Nav className="mr-auto">
+                <Nav.Link href="/">Home</Nav.Link>
+                {this.props.user ? <Nav.Link href="/leagues">Leagues</Nav.Link> : <Nav.Link style={{"textAlign": "right"}} href="/signup">Sign-Up</Nav.Link>}
+                {this.props.user ? <Nav.Link style={{"textAlign": "right"}} onClick={this.props.logoutHandler}>LogOut</Nav.Link> : <Nav.Link style={{"textAlign": "right"}} href="/login">Log-In</Nav.Link>}
+              </Nav>
+            </Navbar.Collapse>
+          </Navbar>
+      )
+    }
 }
 
-export default function NavBar(props) {
-  const classes = useStyles();
-  const [anchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
-
-  return (
-    <div className={classes.root}>
-        <AppBar position="static" style={{"background": "#B9B9B9", "width": "100%"}}>
-            <Toolbar>
-                <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-                </IconButton>
-              <Typography variant="h6" className={classes.title}>
-                  <Button href="/" color="black" >
-                    <h3>
-                    Home
-                    </h3>
-                  </Button>
-              </Typography>
-              {props.user ? <Button onClick={logout} color="black">Logout</Button> : <Button href="/login" color="black">Login</Button>}
-              {props.user ? null : <Button href="/signup" color="black">Signup</Button>}
-            <div>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                open={open}>
-                </Menu>
-            </div>
-        </Toolbar>
-      </AppBar>
-    </div>
-  );
-}
+export default withRouter(NavBar)
