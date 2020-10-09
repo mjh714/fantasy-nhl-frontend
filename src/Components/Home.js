@@ -6,7 +6,9 @@ class Home extends React.Component {
     state = {  }
     render() { 
         return (
-            <img src={StanleyCup} className="App-logo" alt="Stanley-Cup" style={{"zIndex": "1"}} />
+            <div style={{"textAlign": "center"}}>
+                <img src={StanleyCup} className="App-logo" alt="Stanley-Cup" />
+            </div>
         )
     }
 }
