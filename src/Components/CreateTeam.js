@@ -2,10 +2,12 @@ import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
-class CreateLeague extends React.Component {
+class CreateTeam extends React.Component {
     state = { 
-        name: ""
-    }
+        name: "", 
+        user: this.props.currentUser,
+        league: this.props.currentLeague
+     }
 
     changer = (e) => {
         this.setState({
@@ -15,17 +17,18 @@ class CreateLeague extends React.Component {
 
     submitHandler = (e) => {
         e.preventDefault()
-        this.props.leagueHandler(this.state)
+        this.props.teamHandler(this.state)
     }
-    
+
     render() { 
-        return ( 
+        // console.log(this.state.league)
+        return (
             <form onSubmit={this.submitHandler}>
                 <TextField type="text" value={this.state.name} onChange={this.changer}/>
                 <Button type="submit" color="default">Create League!</Button>
             </form>
-         );
+         )
     }
 }
  
-export default CreateLeague;
+export default CreateTeam;
