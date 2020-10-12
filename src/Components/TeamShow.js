@@ -1,17 +1,33 @@
 import React from 'react';
 import {withRouter} from 'react-router-dom'
+import { Card } from 'react-bootstrap'
 
 class TeamShow extends React.Component {
     state = { 
         user: this.props.currentUser,
         team: this.props.team
      }
+
+     players = () => {
+        return this.props.team.players.map(player => <Card style={{ width: '18rem' }}>
+        <Card.Img variant="top" src={player.image} />
+        <Card.Body>
+        <Card.Title>{player.full_name}</Card.Title>
+        </Card.Body>
+      </Card>)
+     }
+
+     clickHandler = () => {
+         let teamId = this.props.team.id
+         this.props.history.push(`/teams/${teamId}/sign-player`)
+     }
+
      render() {
-         console.log(this.state.team)
          return(
              <>
-             <h1 style={{"color":"black"}}>HI</h1>
-             <h1>fds</h1>
+             <button onClick={this.clickHandler}>Sign Payers</button>
+             <h1 style={{"color":"black", "textAlign": "center"}}>{this.state.team.name}</h1>
+             {this.players()}
              </>
          )
      }

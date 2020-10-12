@@ -21,11 +21,10 @@ class CreateTeam extends React.Component {
     }
 
     render() { 
-        // console.log(this.state.league)
         return (
             <form onSubmit={this.submitHandler}>
                 <TextField type="text" value={this.state.name} onChange={this.changer}/>
-                <Button type="submit" color="default">Create League!</Button>
+                <Button type="submit" color="default">Create Team!</Button>
             </form>
          )
     }
