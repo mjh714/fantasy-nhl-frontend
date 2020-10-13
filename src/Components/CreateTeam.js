@@ -5,9 +5,9 @@ import Button from '@material-ui/core/Button';
 class CreateTeam extends React.Component {
     state = { 
         name: "", 
-        user: this.props.currentUser,
-        league: this.props.currentLeague
-     }
+        user_id: JSON.parse(localStorage.getItem('currentUser'))['id'],
+        league_id: JSON.parse(localStorage.getItem('leagueObj'))['leagueObj']['id']
+    }
 
     changer = (e) => {
         this.setState({
@@ -21,6 +21,7 @@ class CreateTeam extends React.Component {
     }
 
     render() { 
+        console.log(this.state)
         return (
             <form onSubmit={this.submitHandler}>
                 <TextField type="text" value={this.state.name} onChange={this.changer}/>

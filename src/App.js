@@ -30,7 +30,8 @@ class App extends React.Component {
           Authorization: `Bearer ${token}`},
         })
       .then(resp => resp.json())
-      .then(data => this.setState({ user: data.user }))
+      .then(data => localStorage.setItem('currentUser', JSON.stringify(data.user)))
+      .then(this.setState({ user: JSON.parse(localStorage.getItem('currentUser')) }))
     } 
     fetch("http://localhost:3000/leagues")
     .then(resp => resp.json())
@@ -107,21 +108,39 @@ class App extends React.Component {
     .then(this.props.history.push("/leagues"))
   }
 
-  teamHandler = (team) => {
+  teamHandler = (teamObj) => {
+    console.log(teamObj)
     const options = {
       method: 'POST',
       headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       },
-      body: JSON.stringify(team)
+      body: JSON.stringify(teamObj)
   }
     fetch("http://localhost:3000/teams", options)
     .then(resp => resp.json())
-    .then(this.props.history.push("/teams"))
+    .then(this.props.history.push("/leagues"))
+  }
+
+  appAddPlayer = (player, currentTeam) => {
+    console.log("player id:",player.id,"team id:", currentTeam.id)
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify({contract: {team_id: currentTeam.id, player_id: player.id}})
+    }
+    fetch("http://localhost:3000/contracts", options)
+    .then(resp => resp.json())
+    .then(this.props.history.push(`/teams/${currentTeam.id}`))
   }
 
   render() {
+    console.log(this.state)
+    console.log(localStorage)
     return (
       <React.Fragment>
         <div style={{"textAlign": "center"}}>
@@ -130,8 +149,8 @@ class App extends React.Component {
           <NavBar user={this.state.user} logoutHandler={this.logout}/>
           {this.state.currentUser ? null :
           <Switch>
+          <Route exact path="/teams/create" render={() => <CreateTeam currentUser={this.state.user} teamHandler={this.teamHandler} />}/>
           <Route exact path="/leagues/create" render={()=> <CreateLeague leagueHandler={this.leagueHandler}/>}/>
-          <Route exact path="/teams/create" render={() => <CreateTeam currentUser={this.state} teamHandler={this.teamHandler} />}/>
           <Route exact path="/teams/:id" render={({match}) => {
             let id = parseInt(match.params.id)
             let foundTeam = this.state.teams.find(team => team.id === id)
@@ -145,7 +164,7 @@ class App extends React.Component {
           <Route exact path="/teams/:id/sign-player" render={({match}) => {
             let id = parseInt(match.params.id)
             let foundTeam = this.state.teams.find(team => team.id === id)
-            return <SignPlayer currentUser={this.state.user} team={foundTeam} />
+            return <SignPlayer clickHandler={this.appAddPlayer} currentUser={this.state.user} team={foundTeam} />
           }}/>
           <Route exact path="/leagues" render={()=> <LeagueContainer currentUser={this.state.user} leagues={this.state.leagues}/> } />
           <Route exact path="/login" render={()=> <Login loginHandler={this.loginHandler} />}/> 
