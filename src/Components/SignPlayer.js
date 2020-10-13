@@ -15,7 +15,7 @@ class SignPlayer extends React.Component {
          fetch("http://localhost:3000/players")
          .then(resp => resp.json())
          .then(data => {
-            let freeAgentsArr = data.filter(player => player.team === null)
+            let freeAgentsArr = data.filter(player => player.contracts.length === 0)
             this.setState({
                 freeAgents: [...freeAgentsArr]
             })
@@ -40,9 +40,10 @@ class SignPlayer extends React.Component {
         // return goaliesArr.map(player => <TableRow key={player.id} player={player} />)
      }
 
-    //  addToTeam = () => {
-    //      console.log("clicked")
-    //  }
+    addToTeam = (e) => {
+        let currentPlayer = this.state.freeAgents.find(player => player.id === parseInt(e.target.dataset.id))
+        this.props.clickHandler(currentPlayer, this.props.team)
+    }
     
     render() { 
         return (
@@ -70,6 +71,8 @@ class SignPlayer extends React.Component {
                 {/* {this.skatersFreeAgents()} */}
                 {this.state.skatersArr ? <TableRow skaters={this.state.skatersArr}/>: null}
             </tbody>
+            <br />
+            <br />
             <thead>
                <tr>
                 <th>Full Name</th>

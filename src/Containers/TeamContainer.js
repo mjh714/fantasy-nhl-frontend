@@ -23,15 +23,13 @@ class TeamContainer extends React.Component {
     getTeams = () => {
         let currentTeams = this.state.teams.filter(team => team.league_id === this.props.league.id)
         let currentUserTeam = currentTeams.find(team => team.user_id === this.props.currentUser.id)
-        console.log(currentUserTeam)
-
         return currentTeams.map(team => <Team key={team.id} style={this.state.style} currentUserTeam={currentUserTeam} team={team} currentUser={this.props.currentUser}/>)
     }
 
     render() { 
         return (
             <>
-            <Button href="teams/create">Create A Team</Button>
+            <Button href="/teams/create">Create A Team</Button>
             <br/>
             <div style={{"background": "#B9B9B9"}}>
                 {this.getTeams()}
@@ -40,5 +38,5 @@ class TeamContainer extends React.Component {
         )
     }
 }
- 
+
 export default TeamContainer;
