@@ -12,16 +12,16 @@ class SignPlayer extends React.Component {
      }
 
     componentDidMount = () => {
-         fetch("http://localhost:3000/players")
-         .then(resp => resp.json())
-         .then(data => {
+        fetch("http://localhost:3000/players")
+        .then(resp => resp.json())
+        .then(data => {
             let freeAgentsArr = data.filter(player => player.contracts.length === 0)
             this.setState({
                 freeAgents: [...freeAgentsArr]
             })
             this.skatersFreeAgents()
             this.goaliesFreeAgents()
-         })
+        })
     }
 
     skatersFreeAgents = () => {
@@ -29,16 +29,14 @@ class SignPlayer extends React.Component {
         this.setState({
             skatersArr: skatersArr
         })
-        // return skatersArr.map((player) => ) 
-     }
+    }
 
-     goaliesFreeAgents = () => {
+    goaliesFreeAgents = () => {
         let goaliesArr = this.state.freeAgents.filter(player => player.primary_position_name === "Goalie")
         this.setState({
             goaliesArr: goaliesArr
         })
-        // return goaliesArr.map(player => <TableRow key={player.id} player={player} />)
-     }
+    }
 
     addToTeam = (e) => {
         let currentPlayer = this.state.freeAgents.find(player => player.id === parseInt(e.target.dataset.id))
@@ -54,7 +52,7 @@ class SignPlayer extends React.Component {
             </div>
             <Table striped bordered hover variant="dark">
             <thead>
-               <tr>
+                <tr>
                 <th>Full Name</th>
                 <th>Position</th>
                 <th>Assists</th>
@@ -68,13 +66,12 @@ class SignPlayer extends React.Component {
                 </tr>
             </thead>
             <tbody onClick={this.addToTeam} style={{"textColor": "black"}}>
-                {/* {this.skatersFreeAgents()} */}
                 {this.state.skatersArr ? <TableRow skaters={this.state.skatersArr}/>: null}
             </tbody>
             <br />
             <br />
             <thead>
-               <tr>
+                <tr>
                 <th>Full Name</th>
                 <th>Position</th>
                 <th>Ot</th>
@@ -88,7 +85,6 @@ class SignPlayer extends React.Component {
                 </tr>
             </thead>
             <tbody onClick={this.addToTeam} style={{"textColor": "black"}}>
-                {/* {this.goaliesFreeAgents()} */}
                 {this.state.goaliesArr ? <TableRow goalies={this.state.goaliesArr}/>: null}
             </tbody> 
             </Table>
