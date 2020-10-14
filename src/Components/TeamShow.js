@@ -24,7 +24,8 @@ class TeamShow extends React.Component {
 
     clicker = () => {
         let teamId = this.props.team
-        this.props.history.push(`/teans/${teamId}/drop-player`)
+        localStorage.setItem('currentTeam', JSON.stringify(this.state.team))
+        this.props.history.push(`/teams/${teamId}/drop-player`)
     }
 
     render() {

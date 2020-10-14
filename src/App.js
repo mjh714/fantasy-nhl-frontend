@@ -12,6 +12,7 @@ import CreateLeague from './Components/CreateLeague'
 import CreateTeam from './Components/CreateTeam'
 import TeamShow from './Components/TeamShow'
 import SignPlayer from './Components/SignPlayer'
+import DropPlayer from './Components/DropPlayer'
 
 class App extends React.Component {
 
@@ -109,7 +110,6 @@ class App extends React.Component {
   }
 
   teamHandler = (teamObj) => {
-    console.log(teamObj)
     const options = {
       method: 'POST',
       headers: {
@@ -124,7 +124,6 @@ class App extends React.Component {
   }
 
   appAddPlayer = (player, currentTeam) => {
-    console.log("player id:",player.id,"team id:", currentTeam.id)
     const options = {
       method: 'POST',
       headers: {
@@ -138,9 +137,30 @@ class App extends React.Component {
     .then(this.props.history.push(`/teams/${currentTeam.id}`))
   }
 
+  appDropPlayer = (player, currentTeam) => {
+    const options = {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify({contract: {team_id: currentTeam.id, player_id: player.id}})
+    }
+    fetch("http://localhost:3000/find-contract", options)
+    .then(resp => resp.json())
+    .then(data => this.deleteContract(data))
+  }
+
+  deleteContract = (contract) => {
+    let options = {
+      method: "DELETE"
+    }
+    fetch(`http://localhost:3000/contracts/${contract.id}`, options)
+    .then(resp => resp.json())
+    .then(this.props.history.push(`/teams/${contract.team_id}`))
+  }
+
   render() {
-    console.log(this.state)
-    console.log(localStorage)
     return (
       <React.Fragment>
         <div style={{"textAlign": "center"}}>
@@ -151,6 +171,10 @@ class App extends React.Component {
           <Switch>
           <Route exact path="/teams/create" render={() => <CreateTeam currentUser={this.state.user} teamHandler={this.teamHandler} />}/>
           <Route exact path="/leagues/create" render={()=> <CreateLeague leagueHandler={this.leagueHandler}/>}/>
+          <Route exact path="/teams/:id/drop-player"  render={({match})=> {
+            let id = parseInt(match.params.id)
+            let foundTeam = this.state.teams.find(team => team.id === id)
+            return <DropPlayer clickHandler={this.appDropPlayer} currentUser={this.state.user} team={foundTeam}/>}}/>
           <Route exact path="/teams/:id" render={({match}) => {
             let id = parseInt(match.params.id)
             let foundTeam = this.state.teams.find(team => team.id === id)
