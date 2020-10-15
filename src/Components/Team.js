@@ -17,15 +17,16 @@ class Team extends React.Component {
     }
     
     render() { 
+        console.log(this.props.topTeam)
         return (
             <React.Fragment>
             {this.checkTeam() ? 
-                <div style={{"backgroundColor": `${this.props.style}`}}>
-                <h4 onClick={this.clickHandler}>{this.props.team.name}</h4> 
+                <div style={{"backgroundColor": `${this.props.style}`, "textAlign": "center"}}>
+                {this.props.topTeam.name === this.props.team.name ? <h4 onClick={this.clickHandler}> 👑{this.props.team.name}👑 </h4> : <h4 onClick={this.clickHandler}>{this.props.team.name}</h4>}
                 </div>
                 :
-                <div>
-                <h4 onClick={this.clickHandler}>{this.props.team.name}</h4> 
+                <div style={{ "textAlign": "center"}}>
+                {this.props.topTeam.name === this.props.team.name ? <h4 onClick={this.clickHandler}> 👑{this.props.team.name}👑 </h4>: <h4 onClick={this.clickHandler}>{this.props.team.name}</h4> }
                 </div>
             }
             </React.Fragment>
