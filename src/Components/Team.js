@@ -17,7 +17,6 @@ class Team extends React.Component {
     }
     
     render() { 
-        console.log(this.props.topTeam)
         return (
             <React.Fragment>
             {this.checkTeam() ? 

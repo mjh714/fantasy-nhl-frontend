@@ -176,9 +176,11 @@ class App extends React.Component {
             let foundTeam = this.state.teams.find(team => team.id === id)
             return <DropPlayer clickHandler={this.appDropPlayer} currentUser={this.state.user} team={foundTeam}/>}}/>
           <Route exact path="/teams/:id" render={({match}) => {
+            let userTeamIds = this.state.user.teams.map(team => team.id)
             let id = parseInt(match.params.id)
             let foundTeam = this.state.teams.find(team => team.id === id)
-            return <TeamShow currentUser={this.state.user} team={foundTeam} />
+            let userTeam = this.state.teams.filter(function(team){return userTeamIds.includes(team.id)})
+            return <TeamShow key={foundTeam.id} userTeam={userTeam} currentUser={this.state.user} team={foundTeam} />
           }} />
           <Route exact path="/leagues/:id" render={({match})=> {
             let id = parseInt(match.params.id)
