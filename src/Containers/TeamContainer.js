@@ -42,7 +42,7 @@ class TeamContainer extends React.Component {
         let currentUserTeam = currentTeams.find(team => team.user_id === this.props.currentUser.id)
         // this.setState({sortedTeams: })
         currentTeams.sort((a,b) => b.num_of_points - a.num_of_points)
-        return currentTeams.map(team => <Team key={team.id} topTeam={currentTeams[0]} style={this.state.style} currentUserTeam={currentUserTeam} team={team} currentUser={this.props.currentUser}/>)
+        return currentTeams.map(team => <Team key={team.id} teamPoints={team.num_of_points} topTeam={currentTeams[0]} style={this.state.style} currentUserTeam={currentUserTeam} team={team} currentUser={this.props.currentUser}/>)
     }
 
     render() { 

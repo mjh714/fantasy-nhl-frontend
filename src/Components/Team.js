@@ -21,11 +21,11 @@ class Team extends React.Component {
             <React.Fragment>
             {this.checkTeam() ? 
                 <div style={{"backgroundColor": `${this.props.style}`, "textAlign": "center"}}>
-                {this.props.topTeam.name === this.props.team.name ? <h4 onClick={this.clickHandler}> 👑{this.props.team.name}👑 </h4> : <h4 onClick={this.clickHandler}>{this.props.team.name}</h4>}
+                {this.props.topTeam.name === this.props.team.name ? <h4 onClick={this.clickHandler}> 👑{this.props.team.name}👑 - {this.props.teamPoints} </h4> : <h4 onClick={this.clickHandler}>{this.props.team.name} - {this.props.teamPoints}</h4>}
                 </div>
                 :
                 <div style={{ "textAlign": "center"}}>
-                {this.props.topTeam.name === this.props.team.name ? <h4 onClick={this.clickHandler}> 👑{this.props.team.name}👑 </h4>: <h4 onClick={this.clickHandler}>{this.props.team.name}</h4> }
+                {this.props.topTeam.name === this.props.team.name ? <h4 onClick={this.clickHandler}> 👑{this.props.team.name}👑 - {this.props.teamPoints} </h4>: <h4 onClick={this.clickHandler}>{this.props.team.name} - {this.props.teamPoints}</h4> }
                 </div>
             }
             </React.Fragment>
